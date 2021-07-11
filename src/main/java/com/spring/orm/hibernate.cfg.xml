@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+	 	<property name="connection.url">jdbc:oracle:thin:@clm-aus-udfysd.bmc.com:1521:ORA12C</property>
+	 	<property name="connection.username">patmon</property>
+	 	<property name="connection.password">bmcAdm1n</property>
+	 	<property name="dialect">org.hibernate.dialect.Oracle12cDialect</property>
+	 	<!-- existing table will be dropped if exists and new table will be created  -->
+	 	<!-- <property name="hbm2ddl.auto">create</property> -->
+	 	<property name="hbm2ddl.auto">create</property>
+	 	<property name="show_sql">false</property>
+	 	<property name="format_sql">false</property>
+	 	<mapping class="com.spring.orm.entity.Student" />
+	 	<mapping class="com.spring.orm.entity.Certificate" />
+	</session-factory>
+</hibernate-configuration>

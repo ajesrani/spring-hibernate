@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xmlns:context="http://www.springframework.org/schema/context"
+	 xmlns:tx="http://www.springframework.org/schema/tx"
+	 xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans.xsd
+	 http://www.springframework.org/schema/context
+	 http://www.springframework.org/schema/context/spring-context.xsd
+	 http://www.springframework.org/schema/tx
+	 http://www.springframework.org/schema/tx/spring-tx.xsd">
+	 
+	 <tx:annotation-driven />
+ 
+	 <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	 	<property name="locations" value="classpath:database-connection.properties" />
+	 </bean>
+	 
+	 <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" name="dataSource" >
+	 	<property name="driverClassName" value="${jdbc.driverClassName}" />
+	 	<property name="url" value="${jdbc.url}" />
+	 	<property name="username" value="${jdbc.username}" />
+	 	<property name="password" value="${jdbc.password}" />
+	 </bean>
+
+	<!-- <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" name="dataSource" >
+	 	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+	 	<property name="url" value="jdbc:oracle:thin:@clm-aus-udfysd.bmc.com:1521:ORA12C" />
+	 	<property name="username" value="patmon" />
+	 	<property name="password" value="bmcAdm1n" />
+	 </bean> -->
+
+	 <!-- Dialect(language) is a class and a bridge between Java and SQL datatype.
+	 It allows Hibernate to generate SQL optimized for a particular relational database. -->
+	 
+	 <bean class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" name="localSFBean" >
+	 	<property name="dataSource" ref="dataSource" />
+	 	<property name="hibernateProperties">
+	 		<props>
+	 			<prop key="hibernate.dialect">org.hibernate.dialect.Oracle12cDialect</prop>
+	 			<prop key="hibernate.show_sql">true</prop>
+	 			<prop key="hibernate.hbm2ddl.auto">create</prop>
+	 		</props>
+	 	</property>
+	 	<property name="annotatedClasses">
+	 		<list>
+	 			<value>com.spring.orm.entity.Student</value>
+	 		</list>
+	 	</property>
+	 </bean>
+	 
+	 <bean class="org.springframework.orm.hibernate5.HibernateTemplate" name="hibernateTemplate" >
+	 	<property name="sessionFactory" ref="localSFBean" />
+	 </bean>
+	 
+	 <bean class="com.spring.orm.dao.StudentDao" name="studentDao" >
+	 	<property name="hibernateTemplate" ref="hibernateTemplate" />
+	 </bean>
+	 
+	 <bean class="org.springframework.orm.hibernate5.HibernateTransactionManager" name="transactionManager" >
+	 	<property name="sessionFactory" ref="localSFBean" />
+	 </bean>
+	 
+</beans>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xmlns:context="http://www.springframework.org/schema/context"
+	 xmlns:util="http://www.springframework.org/schema/util"
+	 xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans.xsd
+	 http://www.springframework.org/schema/context
+	 http://www.springframework.org/schema/context/spring-context.xsd
+	 http://www.springframework.org/schema/util
+	 http://www.springframework.org/schema/util/spring-util.xsd">
+ 
+ 	<context:annotation-config />
+ 	<!-- <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" /> -->
+ 	
+ 	<context:component-scan base-package="com.spring.core" />
+ 	
+ 	<util:list list-class="java.util.LinkedList" id="addressType">
+ 		<value>Rural</value>
+ 		<value>Urban</value>
+ 	</util:list>
+ 
+ 	<!-- Constructor Injection -->
+    <bean class="com.spring.core.Address" name="addressObject">
+    	<constructor-arg value="India" type="String"/>
+    	<constructor-arg>
+    		<props>
+    			<prop key="Kolhapur">Tarabai Park</prop>
+    			<prop key="Pune">Wakad</prop>
+    		</props>
+    	</constructor-arg>
+    	<constructor-arg ref="addressType" />
+    </bean>
+
+	<!-- Setter Injection -->
+    <bean class="com.spring.core.Student" name="studentObject" init-method="init" destroy-method="destroy">
+    	<property name="id" value="1" />
+    	<property name="name" value="Nitin" />
+    	<property name="address" ref = "addressObject" />
+    	<property name="phones">
+    		<list>
+    			<value>1234567890</value>
+    			<value>9876543210</value>
+    		</list>
+    	</property>
+    	<property name="courses">
+    		<map>
+    			<entry key="C++" value="Primary" />
+    			<entry key="JAVA" value="Secondary" />
+    		</map>
+    	</property>
+    </bean>
+    
+    <!-- <bean class="com.spring.core.Employee" name="employeeObject" autowire="byName" /> -->
+    <!-- <bean class="com.spring.core.Employee" name="employeeObject" autowire="byType" /> -->
+    <!-- <bean class="com.spring.core.Employee" name="employeeObject" autowire="constructor" /> -->
+    
+    <bean class="com.spring.core.Employee" name="employeeObject" scope="prototype" />
+ 
+ </beans>
+ 
